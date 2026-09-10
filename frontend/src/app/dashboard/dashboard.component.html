@@ -1,0 +1,105 @@
+<header class="topbar">
+  <span class="brand">Employee Information</span>
+  <button class="logout" (click)="logout()">Sign out</button>
+</header>
+
+<main class="content">
+  <h1>Welcome, {{ session?.fullName }}</h1>
+  <p>You are signed in as <strong>{{ session?.username }}</strong>.</p>
+
+  <section class="card">
+    <h2>Add an employee</h2>
+
+    <form [formGroup]="form" (ngSubmit)="save()" class="employee-form">
+      <div class="field">
+        <label for="firstName">First name</label>
+        <input id="firstName" type="text" formControlName="firstName" />
+        <small
+          class="field-error"
+          *ngIf="form.controls.firstName.touched && form.controls.firstName.invalid"
+        >
+          Required.
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="lastName">Last name</label>
+        <input id="lastName" type="text" formControlName="lastName" />
+        <small
+          class="field-error"
+          *ngIf="form.controls.lastName.touched && form.controls.lastName.invalid"
+        >
+          Required.
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+        <small
+          class="field-error"
+          *ngIf="form.controls.email.touched && form.controls.email.invalid"
+        >
+          Enter a valid email.
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="department">Department</label>
+        <input id="department" type="text" formControlName="department" />
+        <small
+          class="field-error"
+          *ngIf="form.controls.department.touched && form.controls.department.invalid"
+        >
+          Required.
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="jobTitle">Job title</label>
+        <input id="jobTitle" type="text" formControlName="jobTitle" />
+        <small
+          class="field-error"
+          *ngIf="form.controls.jobTitle.touched && form.controls.jobTitle.invalid"
+        >
+          Required.
+        </small>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="saving">
+          {{ saving ? 'Saving…' : 'Save employee' }}
+        </button>
+        <span class="form-error" *ngIf="errorMessage">{{ errorMessage }}</span>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Employees ({{ employees.length }})</h2>
+
+    <p *ngIf="loading" class="muted">Loading…</p>
+    <p *ngIf="!loading && employees.length === 0" class="muted">
+      No employees yet — add the first one above.
+    </p>
+
+    <table *ngIf="employees.length > 0" class="employee-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Job title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of employees">
+          <td>{{ e.lastName }}, {{ e.firstName }}</td>
+          <td>{{ e.email }}</td>
+          <td>{{ e.department }}</td>
+          <td>{{ e.jobTitle }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</main>
